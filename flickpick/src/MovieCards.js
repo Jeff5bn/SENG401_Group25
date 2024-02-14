@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './MovieCards.css';
 
+const Duration = 200;
+
 const movies = [
-  { id: 1, name: "Movie 1", genre: "Action", imgUrl: "https://image.tmdb.org/t/p/original///7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg"},
+  { id: 1, name: "Movie 1", genre: "Action", imgUrl: "https://image.tmdb.org/t/p/original///7lTnXOy0iNtBAdRP3TZvaKJ77F6.jpg" },
   { id: 2, name: "Movie 2", genre: "Mystery", imgUrl: "https://image.tmdb.org/t/p/original///qhb1qOilapbapxWQn9jtRCMwXJF.jpg" },
   { id: 3, name: "Movie 3", genre: "Drama", imgUrl: "https://image.tmdb.org/t/p/original///9GBhzXMFjgcZ3FdR9w3bUMMTps5.jpg" },
   { id: 4, name: "Movie 4", genre: "Comedy", imgUrl: "https://image.tmdb.org/t/p/original///zVMyvNowgbsBAL6O6esWfRpAcOb.jpg" },
@@ -21,11 +23,11 @@ function Movies() {
   
   const handleSwipe = (direction) => {
     setSwipeDirection(direction);
-    // Code to handle like/dislike
+    // Code to handle like/skip/dislike
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
       setSwipeDirection(null);
-    }, 200); // Duration of the transition
+    }, Duration);
   };
 
   return (
@@ -37,7 +39,7 @@ function Movies() {
             <h2>{movies[currentIndex].name}, {movies[currentIndex].genre}</h2>
             <div className="buttons">
               <button onClick={() => handleSwipe('dislike')}>❌</button>
-              <button onClick={() => handleSwipe('skip')}> ⛔ </button>
+              <button onClick={() => handleSwipe('skip')}>⛔</button>
               <button onClick={() => handleSwipe('like')}>❤️</button>
             </div>
           </div>

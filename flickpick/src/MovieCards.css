@@ -45,6 +45,7 @@ body {
   .buttons {
     display: flex;
     justify-content: space-between;
+    align-content: space-between;
     margin-top: 20px;
   }
   
