@@ -1,0 +1,7 @@
+To initalize the react app run these commands:
+
+npx create-react-app quickflix
+
+cd quickflix
+
+npm install react-swipeable
