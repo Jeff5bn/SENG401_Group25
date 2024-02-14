@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: lightslategray;
+  }
+
+  .Recommend {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .movie-card {
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    opacity: 1;
+    border-width: 4px;
+    border-style: solid;
+    border-image: linear-gradient(to right, aqua, blue);
+    border-image-slice: 1;
+  }
+  
+  .movie-card img {
+    width: 80%;
+    height: 80%;
+    border-radius: 10px;
+  }
+  
+  .movie-card h2 {
+    margin: 0;
+    font-size: 20px;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+  }
+  
+  .buttons button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+  
+  .buttons button:hover {
+    background-color: #ccc;
+  }
+
+  .movie-card.slide-out-left {
+    transform: translateX(-100vw);
+    opacity: 0.5;
+  }
+  
+  .movie-card.slide-out-right {
+    transform: translateX(100vw);
+    opacity: 0.5;
+  }
+
+  .movie-card.slide-out-up {
+    transform: translateY(-100vh);
+    opacity: 0.5;
+  }
+
+  .basic-button {
+    margin: 10px;
+    width: 300px;
+    height: 75px;
+    border-radius: 20px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(to right, aqua, blue);
+  }
+
+  .basic-button:hover {
+    background-image: linear-gradient(to right, blue, aqua);
+  }
+
+  .rec-buttons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
