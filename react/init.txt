@@ -5,3 +5,5 @@ npx create-react-app quickflix
 cd quickflix
 
 npm install react-swipeable
+
+then run 'npm start' to start the webpage
