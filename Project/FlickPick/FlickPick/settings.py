@@ -43,11 +43,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'api.apps.ApiConfig',
     'rest_framework',
-    'frontend.apps.FrontendConfig'
+    'frontend.apps.FrontendConfig',
+    'corsheaders'
 ]
 
 # ADD STUFF HERE
-CORS_ALLOWED_ORIGINS = ["PUT REACT ADDRESS HERE"]
+CORS_ALLOWED_ORIGINS = ["http://localhost:3000"]
 # ADD STUFF HERE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -82,7 +83,6 @@ WSGI_APPLICATION = 'FlickPick.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
-
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
