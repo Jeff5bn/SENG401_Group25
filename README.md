@@ -41,6 +41,8 @@ BACKEND SETUP
 FRONTEND SETUP
 1. go to Projects/FlickPick/app
 2. run npm init?
+3. npm install -D tailwindcss
+4. npx tailwindcss init
 
 HOW TO START APPICATION
 1. terminal in Projects/FlickPick
