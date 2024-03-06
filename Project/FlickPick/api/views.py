@@ -170,6 +170,49 @@ class RecommendMovieView(APIView):
                 for genre in genres:
                     genre_counter[genre] = genre_counter.get(genre, 0) + 1
         return genre_counter
+    
+    def movie_score(self, movie, liked_genres):
+        number_of_genres = len(movie.get_genres())
+        movie_score = 0
+        max_score = 0.0
+
+        for score in liked_genres.values():
+            max_score += score
+
+        for genre in movie.get_genres():
+            if genre in liked_genres:
+                movie_score += liked_genres[genre]
+        
+        if number_of_genres < 5:
+            movie_score = ((movie_score / max_score) * ((10.0 - number_of_genres) / 5))
+        else:
+            movie_score = movie_score / max_score        
+
+        if movie_score > 1.0:
+            return 1.0
+        else:
+            return movie_score
+    
+    def movie_recommendations(self, user, liked_genres):
+        recommended_movies = []
+        queryset = Movie.objects.all()
+
+        movie_scores = []
+        for movie in queryset:
+            if (movie.id not in user.get_liked_movies()) and (movie.id not in user.get_disliked_movies()):
+                score = self.movie_score(movie, liked_genres)
+                movie_scores.append((movie, score))
+
+        # Sort the list based on scores in descending order
+        movie_scores.sort(key=lambda x: x[1], reverse=True)
+
+        for movie, score in movie_scores[:20]:
+            # Serialize the movie object
+            movie_data = MovieSerializer(movie).data
+            movie_data['match'] = score
+            recommended_movies.append(movie_data)
+
+        return recommended_movies
 
     def get(self, request, *args, **kwargs):
         user_id = request.GET.get('user_id')
@@ -180,12 +223,21 @@ class RecommendMovieView(APIView):
         liked_genres = self.get_liked_genres(user)
 
         # Printing to confirm it works
+        """
         for genre, count in liked_genres.items():
             print(genre, ':', count)
+            """
 
         top_five_genres = sorted(liked_genres.items(), key=lambda x: x[1], reverse=True)[:5]
         top_five_genres_dict = dict(top_five_genres)
 
-        print(top_five_genres_dict)
+        # Go through movies to find movies that bet match
+        recommended_movies = self.movie_recommendations(user, top_five_genres_dict)
 
-        return Response({'Works so far'}, status=status.HTTP_202_ACCEPTED)
+        return Response(recommended_movies, status=status.HTTP_200_OK)
+
+
+
+        # print(top_five_genres_dict)
+
+        # return Response({'Works so far'}, status=status.HTTP_202_ACCEPTED)
