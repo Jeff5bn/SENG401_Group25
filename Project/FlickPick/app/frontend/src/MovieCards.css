@@ -1,0 +1,120 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #14182f;
+  }
+
+  .center-column-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .movie-card {
+    width: 300px;
+    height: 400px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease-in-out;
+    opacity: 1;
+    border-radius: 20px;
+    box-shadow:
+      inset 0 0 50px white,
+      inset 20px 0 80px aqua,
+      inset -20px 0 80px blue,
+      inset 20px 0 300px blue,
+      inset -20px 0 300px aqua,
+      0 0 25px white,
+      -10px 0 40px blue,
+      10px 0 40px aqua;
+  }
+
+  .movie-card #background {
+    width: 100%;
+    height: 100%;
+    border-radius: 20px;
+    background-color: #14181c;
+  }
+  
+  .movie-card img {
+    margin-top: 8px;
+    width: 75%;
+    height: 75%;
+    border-radius: 10px;
+  }
+  
+  .movie-card h2 {
+    margin: 0;
+    font-size: 20px;
+    color: whitesmoke;
+  }
+  
+  .buttons {
+    display: flex;
+    justify-content: space-evenly;
+    align-content: space-between;
+  }
+  
+  .buttons button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    cursor: pointer;
+    background-color: transparent;
+    border: none;
+    outline: none;
+  }
+  
+  .buttons button:hover {
+    background-color: #ccc;
+  }
+
+  .movie-card.slide-out-left {
+    transform: translateX(-100vw);
+    opacity: 0.5;
+  }
+  
+  .movie-card.slide-out-right {
+    transform: translateX(100vw);
+    opacity: 0.5;
+  }
+
+  .movie-card.slide-out-up {
+    transform: translateY(-100vh);
+    opacity: 0.5;
+  }
+
+  .basic-button {
+    margin: 10px;
+    width: 300px;
+    height: 75px;
+    border-radius: 20px;
+    color: white;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-image: linear-gradient(to right, aqua, blue);
+  }
+
+  .basic-button:hover {
+    background-image: linear-gradient(to right, blue, aqua);
+  }
+
+  .rec-buttons {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
