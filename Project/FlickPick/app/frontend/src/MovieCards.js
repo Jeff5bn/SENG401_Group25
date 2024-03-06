@@ -8,6 +8,7 @@ function Movies({ handleRecommendationsClick }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [movies, setMovies] = useState([]);
+  const [movieid,setMovieid] = useState('');
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/popular-movies", { method: "GET" })
@@ -35,11 +36,14 @@ function Movies({ handleRecommendationsClick }) {
     if (movieid !== null && swipeDirection === 'like') {
       likeMovie();
     }
+    else if(movieid !== null && swipeDirection === 'dislike') {
+    dislikeMovie();
+      }
   }, [movieid, swipeDirection]);
 
   const likeMovie = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/like-movie?user_id=${1}&movie_id=${movies[currentIndex].id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/like-movie?user_id=${2}&movie_id=${movies[currentIndex].id}`, {
         method: "POST"
       });
       if (!response.ok) {
@@ -52,12 +56,30 @@ function Movies({ handleRecommendationsClick }) {
     }
   }
   
+  const dislikeMovie = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/dislike-movie?user_id=${2}&movie_id=${movies[currentIndex].id}`, {
+        method: "POST"
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      // Handle the response data if needed
+    } catch (error) {
+      console.error('Error liking movie:', error);
+    }
+  }
 
   const handleSwipe = (direction) => {
     setSwipeDirection(direction);
     if(direction==='like'){
         console.log("like")
-        likeMovie()
+        setMovieid(movies[currentIndex].id)
+    }
+    else if (direction==='dislike'){
+        console.log("dislike")
+        setMovieid(movies[currentIndex].id)
     }
     // Check if the initial 10 swipes have been completed
     if(currentIndex === 9){
