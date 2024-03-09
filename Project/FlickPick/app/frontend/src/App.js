@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import './App.css';
 import Movies from './MovieCards.js';
-import LoginScreen from './LoginScreen.js';
+import UserScreen from './UserScreen.js';
 import Gallary from './Gallary.js';
 
 function App() {
@@ -17,7 +17,7 @@ function App() {
   return (
     <div className="App">
       {currentComponent === 'recommendations' && <Gallary handleSelectionClick={handleSelectionClick}/>}
-      {currentComponent === 'movies' && <LoginScreen></LoginScreen>}
+      {currentComponent === 'movies' && <UserScreen></UserScreen>}
       {currentComponent === 'movies' && <Movies handleRecommendationsClick={handleRecommendationsClick} />}
     </div>
   );
