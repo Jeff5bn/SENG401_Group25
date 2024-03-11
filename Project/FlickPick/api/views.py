@@ -71,16 +71,18 @@ class CreateUserView(APIView):
             password = serializer.data.get('password')
             first_name = serializer.data.get('first_name')
             last_name = serializer.data.get('last_name')
-            queryset = User.objects.filter(user_name=user_name)
+            queryset = User.objects.get(user_name=user_name)
             # Username already exists
             if queryset.exists():
-                return Response({'Username already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"user_id" : -1, "message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
             else:
                 salt, hashed_password = User().hash_password(password)
                 user = User(user_name=user_name, password=hashed_password.decode('utf-8'), salt=salt.decode('utf-8'), first_name=first_name, last_name=last_name)
                 user.save()
-                return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                created_user = User.objects.get(user_name=user_name)
+                print(created_user.id)
+                return Response({"user_id" : created_user.id, "message": "Account Created"}, status=status.HTTP_201_CREATED)
+        return Response({"user_id" : -1, "message": "Error Creating Account."}, status=status.HTTP_400_BAD_REQUEST)
 
 class GetUser(APIView):
     serializer_class = UserSerializer
