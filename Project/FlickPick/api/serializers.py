@@ -17,6 +17,20 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ['id', 'user_name', 'password', 'first_name', 'last_name', 'account_created', 'liked_movies', 'disliked_movies']
 
 
+class LoginUserSerializer(serializers.Serializer):
+    user_name = serializers.CharField(max_length=150)
+    password = serializers.CharField(max_length=128)
+
+    def validate(self, attrs):
+        user_name = attrs.get('user_name')
+        password = attrs.get('password')
+
+        if user_name and password:
+            return attrs
+        else:
+            raise serializers.ValidationError("Username and password are required.")
+
+
 class CreateUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
