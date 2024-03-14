@@ -4,6 +4,7 @@ from .serializers import MovieSerializer, CreateMovieSerializer, UserSerializer,
 from .models import Movie, User, Genre
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import date
 
 
 # Create your views here.
@@ -17,6 +18,21 @@ class MovieView(generics.ListAPIView):
 class PopularMovieView(generics.ListAPIView):
     serializer_class = MovieSerializer
     queryset = Movie.objects.filter(vote_count__gt=7500).order_by('?')[:60]
+
+# Returns the most popular movies (ordered most to least)
+class OrderedPopularMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(vote_count__gt=15000).order_by('-vote_average')[:60]
+
+# Returns the most recent movies released (most recent to oldest)
+class RecentMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(release_date__lte=date.today()).order_by('-release_date')[:60]
+
+# Returns the upcoming movie releases (closest to furthest)
+class UpcomingMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(release_date__gte=date.today())[:60]
 
 # Adds a movie to the database (don't think we'll need this)
 class CreateMovieView(APIView):

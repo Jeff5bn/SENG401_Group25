@@ -1,11 +1,14 @@
 from django.urls import path
-from .views import MovieView, PopularMovieView, CreateMovieView, GetUser, UserView, CreateUserView, UserLoginTest, GenreView, LikedMovieView, DislikedMovieView, ResetUserView, RecommendMovieView, ConvertGenreView
+from .views import MovieView, PopularMovieView, CreateMovieView, GetUser, UserView, CreateUserView, UserLoginTest, GenreView, LikedMovieView, DislikedMovieView, ResetUserView, RecommendMovieView, ConvertGenreView, RecentMovieView, UpcomingMovieView, OrderedPopularMovieView
 
 urlpatterns = [
     # URL patterns for movie model
     path('movies', MovieView.as_view()),
     path('popular-movies',PopularMovieView.as_view()),
+    path('ordered-popular-movies',OrderedPopularMovieView.as_view()),
     path('create-movie', CreateMovieView.as_view()),
+    path('recent-movies', RecentMovieView.as_view()),
+    path('upcoming-movies', UpcomingMovieView.as_view()),
 
     # URL patterns for user model
     path('users', UserView.as_view()),
