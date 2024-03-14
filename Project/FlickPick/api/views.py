@@ -201,6 +201,7 @@ class RecommendMovieView(APIView):
     def get_liked_genres(self, user):
         genre_counter = {}
         liked_movies = user.get_liked_movies()
+        disliked_movies = user.get_disliked_movies()
 
         for movie_id in liked_movies:
             movie = self.get_movie(movie_id)
@@ -208,6 +209,15 @@ class RecommendMovieView(APIView):
                 genres = movie.get_genres()
                 for genre in genres:
                     genre_counter[genre] = genre_counter.get(genre, 0) + 1
+
+        for movie_id in disliked_movies:
+            movie = self.get_movie(movie_id)
+            if movie:
+                genres = movie.get_genres()
+                for genre in genres:
+                    if genre_counter.get(genre, 0) > 0:
+                        genre_counter[genre] -= 1
+
         return genre_counter
     
     def movie_score(self, movie, liked_genres):
@@ -221,7 +231,7 @@ class RecommendMovieView(APIView):
         for genre in movie.get_genres():
             if genre in liked_genres:
                 movie_score += liked_genres[genre]
-        
+
         if number_of_genres < 5:
             movie_score = ((movie_score / max_score) * ((10.0 - number_of_genres) / 5))
         else:
@@ -245,7 +255,7 @@ class RecommendMovieView(APIView):
         # Sort the list based on scores in descending order
         movie_scores.sort(key=lambda x: x[1], reverse=True)
 
-        for movie, score in movie_scores[:20]:
+        for movie, score in movie_scores[:60]:
             # Serialize the movie object
             movie_data = MovieSerializer(movie).data
             movie_data['match'] = score
