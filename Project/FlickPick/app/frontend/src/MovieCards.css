@@ -4,7 +4,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #14182f;
+    background-color: rgb(48, 57, 57);
   }
 
   .center-column-div {
@@ -17,7 +17,6 @@ body {
   .movie-card {
     width: 300px;
     height: 400px;
-    padding: 10px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -25,22 +24,8 @@ body {
     transition: transform 0.3s ease-in-out;
     opacity: 1;
     border-radius: 20px;
-    box-shadow:
-      inset 0 0 50px white,
-      inset 20px 0 80px aqua,
-      inset -20px 0 80px blue,
-      inset 20px 0 300px blue,
-      inset -20px 0 300px aqua,
-      0 0 25px white,
-      -10px 0 40px blue,
-      10px 0 40px aqua;
-  }
-
-  .movie-card #background {
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    background-color: #14181c;
+    border: 25px solid whitesmoke;
+    border-image: url("https://www.unicefusa.org/sites/default/files/answer-box.png") 20;
   }
   
   .movie-card img {
@@ -97,18 +82,19 @@ body {
     width: 300px;
     height: 75px;
     border-radius: 20px;
-    color: white;
+    color: rgb(48, 57, 57);
     font-size: 24px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
     border: none;
     outline: none;
-    background-image: linear-gradient(to right, aqua, blue);
+    background-image: 
+    url(https://t4.ftcdn.net/jpg/01/57/55/91/360_F_157559100_NHI2HIhnlEsRMZfDkNkB2BrvN9FWmhv0.jpg);
   }
 
   .basic-button:hover {
-    background-image: linear-gradient(to right, blue, aqua);
+    opacity: 0.8;
   }
 
   .rec-buttons {
