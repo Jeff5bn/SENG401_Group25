@@ -1,0 +1,48 @@
+.help-button {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 75px;
+    height: 75px;
+    color: rgb(48, 57, 57);
+    border: none;
+    font-size: 50px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    background-image: 
+    url(https://static.vecteezy.com/system/resources/previews/018/764/682/non_2x/white-coloured-pencil-scribble-paint-free-png.png);
+    background-position: center;
+    background-size: 90px 70px;
+    background-repeat: no-repeat;
+}
+
+.help-button:hover {
+    opacity: 0.8;
+}
+
+.popout {
+    position: absolute;
+    top: 90px;
+    left: 10px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #ccc;
+    transition: transform 0.3s ease;
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popout.show {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.popout-content {
+    max-height: 80vh;
+    max-width: 300px;
+    overflow-y: auto;
+  }

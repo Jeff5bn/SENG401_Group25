@@ -9,6 +9,7 @@ function Movies({ handleRecommendationsClick }) {
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [movies, setMovies] = useState([]);
   const [movieid,setMovieid] = useState('');
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/popular-movies", { method: "GET" })
@@ -105,7 +106,7 @@ function Movies({ handleRecommendationsClick }) {
         <div className={`movie-card ${swipeDirection === 'dislike' ? 'slide-out-left' : swipeDirection === 'like' ? 'slide-out-right' : swipeDirection === 'skip' ? 'slide-out-up' : ''}`}>
 
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
-            <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
+            <h2>{movies.length > 0 && movies[currentIndex]?.title}</h2>
             <div className="buttons">
               <button onClick={() => handleSwipe('dislike')}>❌</button>
               <button onClick={() => handleSwipe('skip')}>⛔</button>
