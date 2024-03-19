@@ -23,8 +23,7 @@ body {
     align-items: center;
     transition: transform 0.3s ease-in-out;
     opacity: 1;
-    border-radius: 20px;
-    border: 25px solid whitesmoke;
+    border: 25px solid;
     border-image: url("https://www.unicefusa.org/sites/default/files/answer-box.png") 20;
   }
   
@@ -81,16 +80,17 @@ body {
     margin: 10px;
     width: 300px;
     height: 75px;
-    border-radius: 20px;
     color: rgb(48, 57, 57);
     font-size: 24px;
     font-weight: bold;
     text-align: center;
     cursor: pointer;
-    border: none;
     outline: none;
     background-image: 
-    url(https://t4.ftcdn.net/jpg/01/57/55/91/360_F_157559100_NHI2HIhnlEsRMZfDkNkB2BrvN9FWmhv0.jpg);
+    url(https://static.vecteezy.com/system/resources/previews/018/764/682/non_2x/white-coloured-pencil-scribble-paint-free-png.png);
+    background-position: center;
+    background-size: 450px 75px;
+    background-repeat: no-repeat;
   }
 
   .basic-button:hover {
