@@ -5,27 +5,43 @@ function LoginScreen({ setShowLogin, setLoggedIn }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [statusText, setStatusText] = useState('');
+  const [signUp, setSignUp] = useState(false);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    //Login Logic Here
-    var loginSuccess = true;
-    // Resetting the form after logging in
-    setUsername('');
-    setPassword('');
-    //Login closes after logged in
-    if (loginSuccess) {
-        setLoggedIn(true);
-        setShowLogin(false);
-        setStatusText('');
+    if (!signUp) {
+      //Login Logic Here
+      var loginSuccess = true;
+      // Resetting the form after logging in
+      setUsername('');
+      setPassword('');
+      if (loginSuccess) {
+        //Login closes after logged in
+          setLoggedIn(true);
+          setShowLogin(false);
+          setStatusText('');
+      } else {
+          setStatusText("Login Failed");
+      }
     } else {
-        setStatusText("Login Failed");
+      //Sign Up Logic Here
+      var signSuccess = true;
+      // Resetting the form after sign up
+      setUsername('');
+      setPassword('');
+      if (signSuccess) {
+        //return to login after sign up
+          setSignUp(false);
+          setStatusText('');
+      } else {
+          setStatusText("Sign Up Failed");
+      }
     }
   };
 
   return (
     <div className="container">
-      <h2>Login</h2>
+      <h2>{!signUp? 'Login' : 'Sign Up'}</h2>
       <form onSubmit={handleLogin}>
         <div>
           <label>Username:</label>
@@ -43,8 +59,9 @@ function LoginScreen({ setShowLogin, setLoggedIn }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button className="login" type="submit">Login</button>
+        <button className="login" type="submit">{!signUp? 'Login' : 'Sign Up'}</button>
       </form>
+      <button className="settings" type="button" onClick={() => setSignUp(!signUp)}>{!signUp ? 'Sign Up' : 'Return to Login'}</button>
       <label className="statusText">{statusText}</label>
     </div>
   );
