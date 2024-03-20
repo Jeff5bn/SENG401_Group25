@@ -3,7 +3,7 @@ import './MovieCards.css';
 
 const Duration = 300;
 
-function Movies({ handleRecommendationsClick }) {
+function Movies({ handleRecommendationsClick , userId}) {
   const [swipeState, setSwipeState] = useState(0); 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [swipeDirection, setSwipeDirection] = useState(null);
@@ -44,7 +44,7 @@ function Movies({ handleRecommendationsClick }) {
 
   const likeMovie = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/like-movie?user_id=${3}&movie_id=${movies[currentIndex].id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/like-movie?user_id=${userId}&movie_id=${movies[currentIndex].id}`, {
         method: "POST"
       });
       if (!response.ok) {
@@ -59,7 +59,7 @@ function Movies({ handleRecommendationsClick }) {
   
   const dislikeMovie = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/dislike-movie?user_id=${3}&movie_id=${movies[currentIndex].id}`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/dislike-movie?user_id=${userId}&movie_id=${movies[currentIndex].id}`, {
         method: "POST"
       });
       if (!response.ok) {

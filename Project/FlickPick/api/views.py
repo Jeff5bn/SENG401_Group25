@@ -5,6 +5,7 @@ from .models import Movie, User, Genre
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from datetime import date
+from django.core.exceptions import ObjectDoesNotExist
 
 
 # Create your views here.
@@ -87,17 +88,18 @@ class CreateUserView(APIView):
             password = serializer.data.get('password')
             first_name = serializer.data.get('first_name')
             last_name = serializer.data.get('last_name')
-            queryset = User.objects.get(user_name=user_name)
+
             # Username already exists
-            if queryset.exists():
-                return Response({"user_id" : -1, "message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
-            else:
+            try:
+                existing_user = User.objects.get(user_name=user_name)
+                return Response({"user_id": -1, "message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
+            except ObjectDoesNotExist:
                 salt, hashed_password = User().hash_password(password)
-                user = User(user_name=user_name, password=hashed_password.decode('utf-8'), salt=salt.decode('utf-8'), first_name=first_name, last_name=last_name)
+                user = User(user_name=user_name, password=hashed_password, salt=salt, first_name=first_name, last_name=last_name)
                 user.save()
                 created_user = User.objects.get(user_name=user_name)
                 print(created_user.id)
-                return Response({"user_id" : created_user.id, "message": "Account Created"}, status=status.HTTP_201_CREATED)
+                return Response({"user_id": created_user.id, "message": "Account Created"}, status=status.HTTP_201_CREATED)
         return Response({"user_id" : -1, "message": "Error Creating Account."}, status=status.HTTP_400_BAD_REQUEST)
 
 class GetUser(APIView):

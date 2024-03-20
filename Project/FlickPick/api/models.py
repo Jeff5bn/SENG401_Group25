@@ -58,7 +58,7 @@ class User(models.Model):
     
     def check_password_test(self, salt, entered_password):
         hashed = bcrypt.hashpw(entered_password.encode('utf-8'), salt.encode('utf-8'))
-        hashed = hashed.decode('utf-8')
+        hashed = hashed
         return hashed == self.password
 
     def add_liked_movie(self, movie_id):

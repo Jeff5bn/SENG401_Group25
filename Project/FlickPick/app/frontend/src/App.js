@@ -5,10 +5,16 @@ import Movies from './MovieCards.js';
 import UserScreen from './UserScreen.js';
 import Gallary from './Gallary.js';
 import Instructions from './HelpPanel.js';
+import LoginScreen from './LoginScreen.js'
 
 function App() {
   const [currentComponent, setCurrentComponent] = useState('movies');
+  const [userId, setUserId] = useState("");
 
+  const changeUserId = (id) => {
+    console.log(id)
+    setUserId(id)
+  }
   const handleRecommendationsClick = () => {
     setCurrentComponent('recommendations');
   };
@@ -17,11 +23,10 @@ function App() {
   }
   return (
     <div className="App">
-      {currentComponent === 'recommendations' && <Gallary handleSelectionClick={handleSelectionClick}/>}
-      {currentComponent === 'movies' && <UserScreen></UserScreen>}
-      {currentComponent === 'movies' && <LoginScreen></LoginScreen>}
+      {currentComponent === 'recommendations' && <Gallary handleSelectionClick={handleSelectionClick} userId={userId}/>}
+      {currentComponent === 'movies' && <UserScreen changeUserId={changeUserId} />}
       {currentComponent === 'movies' && <Instructions></Instructions>}
-      {currentComponent === 'movies' && <Movies handleRecommendationsClick={handleRecommendationsClick} />}
+      {currentComponent === 'movies' && <Movies handleRecommendationsClick={handleRecommendationsClick} userId={userId}/>}
     </div>
   );
 }

@@ -3,11 +3,11 @@ import './Gallary.css';
 import './GallaryCards.css';
 
 
-function Gallary({handleSelectionClick}) {
+function Gallary({handleSelectionClick, userId}) {
     const [movies, setMovies] = useState([]);
     const [swipeDirection, setSwipeDirection] = useState(null);
     useEffect(() => {
-        fetch("http://127.0.0.1:8000/api/recommend-movies?user_id=3", { method: "GET" })
+        fetch(`http://127.0.0.1:8000/api/recommend-movies?user_id=${userId}`, { method: "GET" })
           .then(response => {
             if (!response.ok) {
               throw new Error('Network response was not ok');
