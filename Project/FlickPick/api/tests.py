@@ -6,22 +6,22 @@ class FlickPickAPITest(TestCase):
 
     def setUp(self):
         self.mov1 = Movie.objects.create(backdrop_path="/4MCKNAc6AbWjEsM2h9Xc29owo4z.jpg",
-                                        genre_ids=[28,53,18], 
-                                        id=866398,
-                                        overview="One man’s campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as Beekeepers.",
-                                        poster_path="/A7EByudX0eOzlkQ2FIbogzyazm2.jpg",
-                                        release_date="2024-01-10",
-                                        title="The Beekeeper",
-                                        vote_average=7.243,
-                                        vote_count=832)
+            genre_ids=[28,53,18], 
+            id=866398,
+            overview="One man’s campaign for vengeance takes on national stakes after he is revealed to be a former operative of a powerful and clandestine organization known as Beekeepers.",
+            poster_path="/A7EByudX0eOzlkQ2FIbogzyazm2.jpg",
+            release_date="2024-01-10",
+            title="The Beekeeper",
+            vote_average=7.243,
+            vote_count=832)
         self.user1 = User.objects.create(id=5,
-                                        user_name="jeffbertel",
-                                        password="$2b$12$cJSk.Ekj1zy0DXA6Rt.Qmug2W4EjkwynnDyVecZXxZDFxMxhXJiPu",
-                                        first_name="Jeff",
-                                        last_name="Bartel",
-                                        account_created="2024-03-20T04:50:49.343645Z",
-                                        liked_movies=[263115,284052],
-                                        disliked_movies=[254,8966])
+            user_name="jeffbertel",
+            password="$2b$12$cJSk.Ekj1zy0DXA6Rt.Qmug2W4EjkwynnDyVecZXxZDFxMxhXJiPu",
+            first_name="Jeff",
+            last_name="Bartel",
+            account_created="2024-03-20T04:50:49.343645Z",
+            liked_movies=[263115,284052],
+            disliked_movies=[254,8966])
         
         self.user1.hash_password(self.user1.password)
     
