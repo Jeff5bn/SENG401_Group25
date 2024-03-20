@@ -9,6 +9,7 @@ function Movies({ handleRecommendationsClick }) {
   const [swipeDirection, setSwipeDirection] = useState(null);
   const [movies, setMovies] = useState([]);
   const [movieid,setMovieid] = useState('');
+  const [genres, setGenres] = useState([]);
 
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/popular-movies", { method: "GET" })
@@ -103,24 +104,21 @@ function Movies({ handleRecommendationsClick }) {
                   See Recommendations
                 </button>
         <div className={`movie-card ${swipeDirection === 'dislike' ? 'slide-out-left' : swipeDirection === 'like' ? 'slide-out-right' : swipeDirection === 'skip' ? 'slide-out-up' : ''}`}>
-          <div id="background">
+
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
-            <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
+            <h2>{movies.length > 0 && movies[currentIndex]?.title}</h2>
             <div className="buttons">
               <button onClick={() => handleSwipe('dislike')}>❌</button>
               <button onClick={() => handleSwipe('skip')}>⛔</button>
               <button onClick={() => handleSwipe('like')}>❤️</button>
             </div>
-          </div>
         </div>
         </>
       ) : swipeState === 1 ? (
         <div className="center-column-div">
           <div className="movie-card" style={{opacity: "0.2"}}>
-          <div id="background">
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
             <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
-            </div>
           </div>
           <div className="rec-buttons">
           <button className="basic-button" onClick={handleRecommendationsClick}>
@@ -135,7 +133,6 @@ function Movies({ handleRecommendationsClick }) {
             See Recommendations
           </button>
           <div className={`movie-card ${swipeDirection === 'dislike' ? 'slide-out-left' : swipeDirection === 'like' ? 'slide-out-right' : swipeDirection === 'skip' ? 'slide-out-up' : ''}`}>
-            <div id="background">
             <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
             <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
               <div className="buttons">
@@ -143,7 +140,6 @@ function Movies({ handleRecommendationsClick }) {
                 <button onClick={() => handleSwipe('skip')}>⛔</button>
                 <button onClick={() => handleSwipe('like')}>❤️</button>
               </div>
-            </div>
           </div>
         </div>
       ) : (
