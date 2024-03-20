@@ -27,10 +27,15 @@ BACKEND SETUP
    
     3.1 paste this
     SECRET_KEY=django-insecure-8t#9vb5g_j3pcf4qg!=!#(rnw@=u0-$kygjm=a4l#(718$h$#a
+
     DB_NAME=FlickPick
+
     DB_USER=
+
     DB_PASSWORD=
+    
     DB_HOST=localhost
+
     DB_PORT=5432
    
     3.2 add DB_USER ('postgres' by default) and DB_PASSWORD (superuser password)
@@ -42,6 +47,10 @@ BACKEND SETUP
     3.5 pip install djangorestframework
    
     3.6 pip install psycopg2
+
+    3.61 python -m pip install django-cors-headers
+
+    3.62 pip install py-bcrypt
    
     3.4 in Project/FlickPick: python manage.py makemigrations (if issues make sure port on .env matches port on pgadmin right click postgres 16 -> portperties)
    
@@ -58,14 +67,13 @@ BACKEND SETUP
 14. go to this url to see if the api is workinig http://127.0.0.1:8000/api/movies
 
 FRONTEND SETUP
-1. go to Projects/FlickPick/app
-2. run npm init?
+1. go to Project/FlickPick/app/frontend
 3. npm install -D tailwindcss
 4. npx tailwindcss init
 
 HOW TO START APPICATION
-1. terminal in Projects/FlickPick
+1. terminal in Project/FlickPick
 1.1 run: python manage.py runserver
 
-2. terminal in Projects/FlickPick/app
+2. terminal in Project/FlickPick/app
 2.1 run: npm start
