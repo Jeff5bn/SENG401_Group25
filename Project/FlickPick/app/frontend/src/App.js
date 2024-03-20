@@ -4,6 +4,7 @@ import './App.css';
 import Movies from './MovieCards.js';
 import UserScreen from './UserScreen.js';
 import Gallary from './Gallary.js';
+import Instructions from './HelpPanel.js';
 
 function App() {
   const [currentComponent, setCurrentComponent] = useState('movies');
@@ -18,6 +19,8 @@ function App() {
     <div className="App">
       {currentComponent === 'recommendations' && <Gallary handleSelectionClick={handleSelectionClick}/>}
       {currentComponent === 'movies' && <UserScreen></UserScreen>}
+      {currentComponent === 'movies' && <LoginScreen></LoginScreen>}
+      {currentComponent === 'movies' && <Instructions></Instructions>}
       {currentComponent === 'movies' && <Movies handleRecommendationsClick={handleRecommendationsClick} />}
     </div>
   );

@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 import random
+import bcrypt
 
 # Function to generate new id, if IMDB id nt available
 def generate_unique_id():
@@ -33,7 +34,8 @@ class Movie(models.Model):
 
 class User(models.Model):
     user_name = models.CharField(max_length=150, unique=True)
-    password = models.CharField(max_length=30, null=False)
+    password = models.CharField(max_length=128, null=False)
+    salt = models.CharField(max_length=128)
     first_name = models.CharField(max_length=150, blank=True, null=True)
     last_name = models.CharField(max_length=150, blank=True, null=True)
     account_created = models.DateTimeField(auto_now_add=True)
@@ -46,8 +48,18 @@ class User(models.Model):
     def get_disliked_movies(self):
         return self.disliked_movies
     
-    def check_password(self, entered_password):
-        return entered_password == self.password
+    def get_salt(self):
+        return self.salt
+    
+    def hash_password(self, password):
+        salt = bcrypt.gensalt()
+        hashed = bcrypt.hashpw(password.encode('utf-8'), salt)
+        return salt, hashed
+    
+    def check_password_test(self, salt, entered_password):
+        hashed = bcrypt.hashpw(entered_password.encode('utf-8'), salt.encode('utf-8'))
+        hashed = hashed.decode('utf-8')
+        return hashed == self.password
 
     def add_liked_movie(self, movie_id):
         movie_id = int(movie_id)

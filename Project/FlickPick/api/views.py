@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from rest_framework import generics, status
-from .serializers import MovieSerializer, CreateMovieSerializer, UserSerializer, CreateUserSerializer, GenreSerializer
+from .serializers import MovieSerializer, CreateMovieSerializer, UserSerializer, CreateUserSerializer, LoginUserSerializer, GenreSerializer
 from .models import Movie, User, Genre
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from datetime import date
 
 
 # Create your views here.
@@ -12,11 +13,26 @@ class MovieView(generics.ListAPIView):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
 
-# Returns movies that have atleast 10,000 ratings votes (hopefully user has seen these movies)
-# Right now it is set to only send the first 50 movies in the list
+# Returns movies that have atleast 7,500 ratings votes (hopefully user has seen these movies)
+# Right now it is set to only send the first 60 movies in the list
 class PopularMovieView(generics.ListAPIView):
     serializer_class = MovieSerializer
     queryset = Movie.objects.filter(vote_count__gt=7500).order_by('?')[:60]
+
+# Returns the most popular movies (ordered most to least)
+class OrderedPopularMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(vote_count__gt=15000).order_by('-vote_average')[:60]
+
+# Returns the most recent movies released (most recent to oldest)
+class RecentMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(release_date__lte=date.today()).order_by('-release_date')[:60]
+
+# Returns the upcoming movie releases (closest to furthest)
+class UpcomingMovieView(generics.ListAPIView):
+    serializer_class = MovieSerializer
+    queryset = Movie.objects.filter(release_date__gte=date.today())[:60]
 
 # Adds a movie to the database (don't think we'll need this)
 class CreateMovieView(APIView):
@@ -71,14 +87,18 @@ class CreateUserView(APIView):
             password = serializer.data.get('password')
             first_name = serializer.data.get('first_name')
             last_name = serializer.data.get('last_name')
-            queryset = User.objects.filter(user_name=user_name)
+            queryset = User.objects.get(user_name=user_name)
             # Username already exists
             if queryset.exists():
-                return Response({'Username already exists.'}, status=status.HTTP_400_BAD_REQUEST)
+                return Response({"user_id" : -1, "message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
             else:
-                user = User(user_name=user_name, password=password, first_name=first_name, last_name=last_name)
+                salt, hashed_password = User().hash_password(password)
+                user = User(user_name=user_name, password=hashed_password.decode('utf-8'), salt=salt.decode('utf-8'), first_name=first_name, last_name=last_name)
                 user.save()
-                return Response(UserSerializer(user).data, status=status.HTTP_201_CREATED)
+                created_user = User.objects.get(user_name=user_name)
+                print(created_user.id)
+                return Response({"user_id" : created_user.id, "message": "Account Created"}, status=status.HTTP_201_CREATED)
+        return Response({"user_id" : -1, "message": "Error Creating Account."}, status=status.HTTP_400_BAD_REQUEST)
 
 class GetUser(APIView):
     serializer_class = UserSerializer
@@ -107,6 +127,25 @@ class ResetUserView(APIView):
             return Response({'User not found'}, status=status.HTTP_404_NOT_FOUND)
         user.reset_like_dislike()
         return Response({'Movie Likes and Dislikes Reset'}, status=status.HTTP_200_OK)
+    
+class UserLoginTest(APIView):
+    serializer_class = LoginUserSerializer
+
+    def post(self, request, format=None):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            user_name = serializer.data.get('user_name')
+            password = serializer.data.get('password')
+            try:
+                user = User.objects.get(user_name=user_name)
+                if user.check_password_test(user.get_salt(), password):
+                    return Response({"user_id" : user.id, "message": "Authentication Successful"}, status=status.HTTP_200_OK)
+                else:
+                    return Response({"user_id" : -1, "message": "Invalid Username or Password"}, status=status.HTTP_404_NOT_FOUND)
+            except User.DoesNotExist:
+                return Response({"user_id" : -1, "message": "Invalid Username or Password"}, status=status.HTTP_404_NOT_FOUND)
+            
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class GenreView(generics.ListAPIView):
     queryset = Genre.objects.all()
@@ -162,6 +201,7 @@ class RecommendMovieView(APIView):
     def get_liked_genres(self, user):
         genre_counter = {}
         liked_movies = user.get_liked_movies()
+        disliked_movies = user.get_disliked_movies()
 
         for movie_id in liked_movies:
             movie = self.get_movie(movie_id)
@@ -169,6 +209,15 @@ class RecommendMovieView(APIView):
                 genres = movie.get_genres()
                 for genre in genres:
                     genre_counter[genre] = genre_counter.get(genre, 0) + 1
+
+        for movie_id in disliked_movies:
+            movie = self.get_movie(movie_id)
+            if movie:
+                genres = movie.get_genres()
+                for genre in genres:
+                    if genre_counter.get(genre, 0) > 0:
+                        genre_counter[genre] -= 1
+
         return genre_counter
     
     def movie_score(self, movie, liked_genres):
@@ -182,7 +231,7 @@ class RecommendMovieView(APIView):
         for genre in movie.get_genres():
             if genre in liked_genres:
                 movie_score += liked_genres[genre]
-        
+
         if number_of_genres < 5:
             movie_score = ((movie_score / max_score) * ((10.0 - number_of_genres) / 5))
         else:
@@ -206,7 +255,7 @@ class RecommendMovieView(APIView):
         # Sort the list based on scores in descending order
         movie_scores.sort(key=lambda x: x[1], reverse=True)
 
-        for movie, score in movie_scores[:20]:
+        for movie, score in movie_scores[:60]:
             # Serialize the movie object
             movie_data = MovieSerializer(movie).data
             movie_data['match'] = score
@@ -222,12 +271,6 @@ class RecommendMovieView(APIView):
 
         liked_genres = self.get_liked_genres(user)
 
-        # Printing to confirm it works
-        """
-        for genre, count in liked_genres.items():
-            print(genre, ':', count)
-            """
-
         top_five_genres = sorted(liked_genres.items(), key=lambda x: x[1], reverse=True)[:5]
         top_five_genres_dict = dict(top_five_genres)
 
@@ -235,9 +278,17 @@ class RecommendMovieView(APIView):
         recommended_movies = self.movie_recommendations(user, top_five_genres_dict)
 
         return Response(recommended_movies, status=status.HTTP_200_OK)
+    
+class ConvertGenreView(APIView):
+    def post(self, request, *args, **kwargs):
+        genres = request.data.get('genres', [])
 
+        converted_genres = []
+        for genre in genres:
+            try:
+                genre_mapping = Genre.objects.get(id=genre)
+                converted_genres.append(genre_mapping.name)
+            except Genre.DoesNotExist:
+                pass
 
-
-        # print(top_five_genres_dict)
-
-        # return Response({'Works so far'}, status=status.HTTP_202_ACCEPTED)
+        return Response({"genres" : converted_genres}, status=status.HTTP_200_OK)
