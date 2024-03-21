@@ -27,6 +27,11 @@ function Movies({ handleRecommendationsClick , userId}) {
           imgUrl: `https://image.tmdb.org/t/p/original//${movie.poster_path}`
         }));
         setMovies(moviesWithFullImgUrl); // Update state with fetched data
+
+        // Fetch the genres for the first movie
+        if (moviesWithFullImgUrl.length > 0) {
+          fetchGenres(moviesWithFullImgUrl[0].genre_ids);
+        }
       })
       .catch(error => {
         console.error('Error fetching data:', error);
@@ -93,8 +98,31 @@ function Movies({ handleRecommendationsClick , userId}) {
     // Code to handle like/skip/dislike
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
+      if (currentIndex + 1 <= movies.length) {
+        fetchGenres(movies[currentIndex + 1].genre_ids);
+      }
       setSwipeDirection(null);
     }, Duration);
+  };
+
+  const fetchGenres = async (ids) => {
+    try {
+      const response = await fetch("http://127.0.0.1:8000/api/convert-genres", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ genres: ids })
+      });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const { genres } = await response.json();
+      setGenres(genres);
+
+    } catch (error) {
+      console.error('Error fetching genres:', error);
+    }
   };
 
   return (
@@ -107,6 +135,7 @@ function Movies({ handleRecommendationsClick , userId}) {
 
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
             <h2>{movies.length > 0 && movies[currentIndex]?.title}</h2>
+            <h2>{genres !== undefined && genres.join(', ')}</h2>
             <div className="buttons">
               <button onClick={() => handleSwipe('dislike')}>❌</button>
               <button onClick={() => handleSwipe('skip')}>⛔</button>
