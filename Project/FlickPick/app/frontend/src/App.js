@@ -24,7 +24,7 @@ function App() {
   return (
     <div className="App">
       {currentComponent === 'recommendations' && <Gallary handleSelectionClick={handleSelectionClick} userId={userId}/>}
-      {currentComponent === 'movies' && <UserScreen changeUserId={changeUserId} />}
+      {currentComponent === 'movies' && <UserScreen changeUserId={changeUserId} userId={userId}/>}
       {currentComponent === 'movies' && <Instructions></Instructions>}
       {currentComponent === 'movies' && <Movies handleRecommendationsClick={handleRecommendationsClick} userId={userId}/>}
     </div>
