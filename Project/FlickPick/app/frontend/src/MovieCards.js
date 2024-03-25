@@ -132,22 +132,31 @@ function Movies({ handleRecommendationsClick , userId}) {
   };
 
   //Functions for handling swiping action
-  const handleMouseDown = (event) => {
-    setStartX(event.clientX);
-    setStartY(event.clientY);
+  const swipeActionStart = (event) => {
+    if(event.touches){
+      setStartX(event.touches[0].clientX);
+      setStartY(event.touches[0].clientY);
+    }
+    else{
+      setStartX(event.clientX);
+      setStartY(event.clientY);
+    }
   };
 
-  const handleMouseMove = (event) => {
+  const swipeActionMove = (event) => {
     if (startX === null || startY === null) return;
 
-    const deltaX = event.clientX - startX;
-    const deltaY = event.clientY - startY;
+    const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+    const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+
+    const deltaX = clientX - startX;
+    const deltaY = clientY - startY;
 
     setTranslateX(deltaX);
     setTranslateY(deltaY);
   };
 
-  const handleMouseUp = () => {
+  const swipeActionEnd = () => {
     if (startX === null || startY === null) return;
 
     const deltaX = translateX;
@@ -173,9 +182,14 @@ function Movies({ handleRecommendationsClick , userId}) {
 
   return (
     <div className="Movie"
-    onMouseDown={handleMouseDown}
-    onMouseMove={handleMouseMove}
-    onMouseUp={handleMouseUp}>
+    onMouseDown={swipeActionStart}
+    onMouseMove={swipeActionMove}
+    onMouseUp={swipeActionEnd}
+
+    onTouchStart={swipeActionStart}
+    onTouchMove={swipeActionMove}
+    onTouchEnd={swipeActionEnd}
+    >
       {swipeState === 0 ? (<>
                   <button className="basic-button" onClick={handleRecommendationsClick}>
                   See Recommendations
