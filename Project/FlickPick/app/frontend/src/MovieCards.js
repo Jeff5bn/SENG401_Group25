@@ -11,6 +11,12 @@ function Movies({ handleRecommendationsClick , userId}) {
   const [movieid,setMovieid] = useState('');
   const [genres, setGenres] = useState([]);
 
+  //States for handling swiping action
+  const [startX, setStartX] = useState(null);
+  const [startY, setStartY] = useState(null);
+  const [translateX, setTranslateX] = useState(0);
+  const [translateY, setTranslateY] = useState(0);
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/popular-movies", { method: "GET" })
       .then(response => {
@@ -98,7 +104,7 @@ function Movies({ handleRecommendationsClick , userId}) {
     // Code to handle like/skip/dislike
     setTimeout(() => {
       setCurrentIndex(currentIndex + 1);
-      if (currentIndex + 1 <= movies.length) {
+      if (currentIndex + 1 < movies.length) {
         fetchGenres(movies[currentIndex + 1].genre_ids);
       }
       setSwipeDirection(null);
@@ -125,8 +131,51 @@ function Movies({ handleRecommendationsClick , userId}) {
     }
   };
 
+  //Functions for handling swiping action
+  const handleMouseDown = (event) => {
+    setStartX(event.clientX);
+    setStartY(event.clientY);
+  };
+
+  const handleMouseMove = (event) => {
+    if (startX === null || startY === null) return;
+
+    const deltaX = event.clientX - startX;
+    const deltaY = event.clientY - startY;
+
+    setTranslateX(deltaX);
+    setTranslateY(deltaY);
+  };
+
+  const handleMouseUp = () => {
+    if (startX === null || startY === null) return;
+
+    const deltaX = translateX;
+    const deltaY = translateY;
+
+    setStartX(null);
+    setStartY(null);
+    setTranslateX(0);
+    setTranslateY(0);
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+      if (deltaX > 0) {
+        handleSwipe('like');
+      } else {
+        handleSwipe('dislike');
+      }
+    } else {
+      if (deltaY < 0) {
+        handleSwipe('skip');
+      }
+    }
+  };
+
   return (
-    <div className="Movie">
+    <div className="Movie"
+    onMouseDown={handleMouseDown}
+    onMouseMove={handleMouseMove}
+    onMouseUp={handleMouseUp}>
       {swipeState === 0 ? (<>
                   <button className="basic-button" onClick={handleRecommendationsClick}>
                   See Recommendations
