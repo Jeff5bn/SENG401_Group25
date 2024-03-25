@@ -142,16 +142,32 @@ function LoginScreen({ setShowLogin, setLoggedIn ,loggedIn, changeUserId}) {
   );
 }
 
-function SettingsScreen({ setShowSettings, setLoggedIn ,setShowLogin}) {
+function SettingsScreen({ setShowSettings, setLoggedIn ,setShowLogin,userId}) {
   const handleLogout = () => {
     setLoggedIn(false);
     setShowSettings(false);
     setShowLogin(true);
   };
 
-  const handleReset = () => {
-    // Reset call here
-  }
+  const handleReset = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/reset-user-preferences?user_id=${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify the content type
+        }
+            });
+      if (!response.ok) {
+        console.log(response);
+      }
+      else{
+        setShowSettings(false)
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
+  
 
   return (
     <div className="container">
@@ -165,12 +181,12 @@ function SettingsScreen({ setShowSettings, setLoggedIn ,setShowLogin}) {
   );
 }
 
-function UserScreen({changeUserId,UserId}) {
+function UserScreen({changeUserId,userId}) {
   const [showLogin, setShowLogin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   useEffect(()=>{
-    if(UserId===''){
+    if(userId===''){
     setShowLogin(true)
   }
   else{
@@ -184,7 +200,7 @@ function UserScreen({changeUserId,UserId}) {
       ) : (
         <button className={`button-toggle ${showLogin ? 'active' : ''}`}>Login</button>
       )}
-      {showSettings && <SettingsScreen setShowSettings={setShowSettings} setLoggedIn={setLoggedIn} setShowLogin={setShowLogin}/>}
+      {showSettings && <SettingsScreen setShowSettings={setShowSettings} setLoggedIn={setLoggedIn} setShowLogin={setShowLogin} userId={userId}/>}
       {showLogin && <LoginScreen setShowLogin={setShowLogin} setLoggedIn={setLoggedIn} changeUserId={changeUserId} loggedIn={loggedIn}/>}
     </div>
   );
