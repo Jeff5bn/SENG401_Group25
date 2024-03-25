@@ -132,43 +132,28 @@ function Movies({ handleRecommendationsClick , userId}) {
                   See Recommendations
                 </button>
         <div className={`movie-card ${swipeDirection === 'dislike' ? 'slide-out-left' : swipeDirection === 'like' ? 'slide-out-right' : swipeDirection === 'skip' ? 'slide-out-up' : ''}`}>
-
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
             <h2>{movies.length > 0 && movies[currentIndex]?.title}</h2>
-            <h2>{genres !== undefined && genres.join(', ')}</h2>
-            <div className="buttons">
-              <button onClick={() => handleSwipe('dislike')}>❌</button>
-              <button onClick={() => handleSwipe('skip')}>⛔</button>
-              <button onClick={() => handleSwipe('like')}>❤️</button>
-            </div>
+            <h3>{genres !== undefined && genres.join(', ')}</h3>
         </div>
+        <div className="buttons">
+              <button onClick={() => handleSwipe('dislike')}>X</button>
+              <button onClick={() => handleSwipe('skip')}>&#8634;</button>
+              <button onClick={() => handleSwipe('like')}>&#9829;</button>
+          </div>
         </>
       ) : swipeState === 1 ? (
         <div className="center-column-div">
           <div className="movie-card" style={{opacity: "0.2"}}>
           <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
-            <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
+          <h2>{movies.length > 0 && movies[currentIndex]?.title}</h2>
+          <h3>{genres !== undefined && genres.join(', ')}</h3>
           </div>
           <div className="rec-buttons">
           <button className="basic-button" onClick={handleRecommendationsClick}>
             See Recommendations
           </button>
-            <button className="basic-button" onClick={() => setSwipeState(2)}>Continue Swiping</button>
-          </div>
-        </div>
-      ) : swipeState === 2 ? (
-        <div className="center-column-div">
-          <button className="basic-button" onClick={handleRecommendationsClick}>
-            See Recommendations
-          </button>
-          <div className={`movie-card ${swipeDirection === 'dislike' ? 'slide-out-left' : swipeDirection === 'like' ? 'slide-out-right' : swipeDirection === 'skip' ? 'slide-out-up' : ''}`}>
-            <img src={movies.length > 0 && movies[currentIndex]?.imgUrl} alt={movies.length > 0 && movies[currentIndex]?.imgUrl} />
-            <h2>{movies.length > 0 && movies[currentIndex]?.title}, {movies.length > 0 && movies[currentIndex]?.release_date}</h2>
-              <div className="buttons">
-                <button onClick={() => handleSwipe('dislike')}>❌</button>
-                <button onClick={() => handleSwipe('skip')}>⛔</button>
-                <button onClick={() => handleSwipe('like')}>❤️</button>
-              </div>
+            <button className="basic-button" onClick={() => setSwipeState(0)}>Continue Curation</button>
           </div>
         </div>
       ) : (

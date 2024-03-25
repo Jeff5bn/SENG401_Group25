@@ -5,6 +5,10 @@ body {
     justify-content: center;
     align-items: center;
     background-color: rgb(48, 57, 57);
+    background-image: 
+    url(https://t4.ftcdn.net/jpg/06/78/35/65/240_F_678356531_V4Qyu5lz2Y3qHMZQyByTWWra4iGaFF9g.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   .center-column-div {
@@ -15,11 +19,11 @@ body {
   }
   
   .movie-card {
-    width: 300px;
-    height: 400px;
+    width: 450px;
+    height: 600px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     transition: transform 0.3s ease-in-out;
     opacity: 1;
@@ -35,22 +39,34 @@ body {
   }
   
   .movie-card h2 {
-    margin: 0;
+    margin: 5px;
+    font-size: 24px;
+    font-weight: bold;
+    color: whitesmoke;
+  }
+
+  .movie-card h3 {
+    margin: 5px;
     font-size: 20px;
+    font-weight: bold;
+    font-style: italic;
     color: whitesmoke;
   }
   
   .buttons {
+    padding-top: 20px;
     display: flex;
     justify-content: space-evenly;
     align-content: space-between;
   }
   
   .buttons button {
-    width: 50px;
-    height: 50px;
+    width: 75px;
+    height: 75px;
     border-radius: 50%;
-    font-size: 24px;
+    font-size: 36px;
+    font-weight: bolder;
+    color: whitesmoke;
     cursor: pointer;
     background-color: transparent;
     border: none;
@@ -58,7 +74,8 @@ body {
   }
   
   .buttons button:hover {
-    background-color: #ccc;
+    background-color: dimgray;
+    opacity: 0.9;
   }
 
   .movie-card.slide-out-left {
