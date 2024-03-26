@@ -132,3 +132,31 @@ body {
     justify-content: center;
     align-items: center;
   }
+
+  @media (max-width: 500px) {
+    .movie-card {
+      width: 90%;
+      height: auto;
+    }
+  
+    .movie-card h2 {
+      font-size: 5vw; 
+    }
+  
+    .movie-card h3 {
+      font-size: 4vw;
+    }
+  
+    .buttons button {
+      font-size: 5vw; 
+    }
+  }
+
+  @media (max-height: 700px) {
+    .basic-button {
+      width: 40%;
+      height: auto;
+      font-size: 4vw;
+      background-size: auto;
+    }
+  }
