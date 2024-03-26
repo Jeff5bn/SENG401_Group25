@@ -1,11 +1,21 @@
 import React, { useState,useEffect } from 'react';
+import GallaryPopup from './GallaryPopup';
 import './Gallary.css';
 import './GallaryCards.css';
+import './GallaryPopup.css';
 
+const Duration = 50;
 
 function Gallary({handleSelectionClick, userId}) {
     const [movies, setMovies] = useState([]);
     const [swipeDirection, setSwipeDirection] = useState(null);
+    const [movieid,setMovieid] = useState('');
+    const [currentIndex, setCurrentIndex] = useState(0);
+
+    const [popup, setPopup] = useState(false);
+    const [PopupState, setPopupState] = useState(null); 
+
+    //For Images
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/recommend-movies?user_id=${userId}`, { method: "GET" })
           .then(response => {
@@ -28,86 +38,182 @@ function Gallary({handleSelectionClick, userId}) {
             console.error('Error fetching data:', error);
           });
       }, []);
+      //END
 
-    const handleSwipe = (direction) => {
-      setSwipeDirection(direction);
-      // Code to handle like/RecDislike
-      setTimeout(() => {
-        setSwipeDirection(null);
-      }, 200); // Duration of the transition
-    };  
+    //Like and Dislike functionallity
 
+    useEffect(() => {
+        if (movieid !== null && swipeDirection === 'like') {
+          likeMovie();
+        }
+        else if(movieid !== null && swipeDirection === 'dislike') {
+          dislikeMovie();
+          }
+      }, [movieid, swipeDirection]);
+    
+      const likeMovie = async () => {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/api/like-movie?user_id=${userId}&movie_id=${movies[currentIndex].id}`, {
+            method: "POST"
+          });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          // Handle the response data if needed
+        } catch (error) {
+          console.error('Error liking movie:', error);
+        }
+      }
+      
+      const dislikeMovie = async () => {
+        try {
+          const response = await fetch(`http://127.0.0.1:8000/api/dislike-movie?user_id=${userId}&movie_id=${movies[currentIndex].id}`, {
+            method: "POST"
+          });
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const data = await response.json();
+          // Handle the response data if needed
+        } catch (error) {
+          console.error('Error liking movie:', error);
+        }
+      }
+
+    const handleLike = (like, index) => {
+        setSwipeDirection(like);
+        if(like==='like'){
+            setMovieid(movies[index].id)
+            setCurrentIndex(index)
+        }
+        else if (like==='dislike'){
+            setMovieid(movies[index].id)
+            setCurrentIndex(index)
+        }
+        setTimeout(() => {
+            setSwipeDirection(null);
+          }, Duration);
+        setPopup(!popup);
+
+      };
+      //END
+      const togglePopUp = (direction) => {
+          setMovieid(null);
+          setSwipeDirection(null);
+          setPopupState(direction);
+          setPopup(!popup) 
+      }; 
+    
     return (
+        <div>
         <div id = "Gallary">
             <div id="topbar">
-            <button className="basic-button" onClick={handleSelectionClick} type='button'>Curation</button>
-                <button className="basic-button">Gallary</button>
+            <button className="menuButton" onClick={handleSelectionClick} type='button'>See Curation</button>
             </div>
             {movies.length > 0 && (<>
             <div id='userRecc'>
             <h1 class="text-left ...">Recommend For You</h1>
 
             <div className='flex'> 
-            <button className={`movie-card2 ${swipeDirection === 'RecDislike1' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike1')}>
-                            <img src={movies[0].imgUrl} alt={movies[0].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike1' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike1')}>
-                            <img src={movies[1].imgUrl} alt={movies[1].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike2' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike2')}>
-                            <img src={movies[2].imgUrl} alt={movies[2].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike3' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike3')}>
-                            <img src={movies[3].imgUrl} alt={movies[3].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike4' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike4')}>
-                            <img src={movies[4].imgUrl} alt={movies[4].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike5' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike5')}>
-                            <img src={movies[5].imgUrl} alt={movies[5].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike6' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike6')}>
-                            <img src={movies[6].imgUrl} alt={movies[6].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike7' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike7')}>
-                            <img src={movies[7].imgUrl} alt={movies[7].title} />
-                        </button>
-                        <button className={`movie-card2 ${swipeDirection === 'RecDislike8' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('RecDislike8')}>
-                            <img src={movies[8].imgUrl} alt={movies[8].title} />
-                        </button>
+            {['RecDislike0', 'RecDislike1', 'RecDislike2',
+            'RecDislike3', 'RecDislike4', 'RecDislike5', 
+            'RecDislike6', 'RecDislike7'].map((recDislike, movieIndex) => (
+                <div key={movieIndex}>
+                    <button 
+                        className={`movie-card2 ${PopupState === recDislike ? 'toggle' : ''}`} 
+                        onClick={() => togglePopUp(recDislike)}
+                    >
+                        <img src={movies[movieIndex].imgUrl} alt={movies[movieIndex].title} />
+                    </button>
+                    {/*Popup UI*/}
+                    {popup && recDislike === PopupState && (
+                        <div className='popup'>
+                            <button className = "closeButton" onClick={() => togglePopUp(recDislike)}>X</button>
+                            <div className='contentBox'>
+                                <div className='popupImage'>
+                                    <img src={movies[movieIndex].imgUrl} alt={movies[movieIndex].title} />
+                                </div>
+                                <div className='textDescription'>
+                                    <h1>
+                                        {movies[movieIndex].title}
+                                    </h1>
+                                    <h2>
+                                        Release Date: {movies[movieIndex].release_date}
+                                    </h2>
+                                    <h2>
+                                        Total Votes: {movies[movieIndex].vote_count}
+                                    </h2>
+                                    <br></br>
+                                    <p>
+                                        {movies[movieIndex].overview}
+                                    </p>
+                                    <div className='bottomInfo'>
+                                        <h1>Like: <button className='likeAndDislike' onClick={() => handleLike('like', movieIndex)}>❤️</button></h1>
+                                        <h1>Dislike: <button className='likeAndDislike' onClick={() => handleLike('dislike', movieIndex)}>❌</button></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
             </div>       
-
             </div>
+            
             <div id='popularRecc'>
                 <h1 class="text-left ...">Featured Today</h1>
                 <div className='flex'> 
-                <button className={`movie-card2 ${swipeDirection === 'FeatDislike1' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike1')}>
-                            <img src={movies[8].imgUrl} alt={movies[8].title} />
+                    {['FeatDislike1', 'FeatDislike2', 'FeatDislike3', 
+                    'FeatDislike4', 'FeatDislike5', 'FeatDislike6', 
+                    'FeatDislike7', 'FeatDislike8'].map((featDislike, movieIndex) => (
+                    <div key={movieIndex}>
+                        <button 
+                            className={`movie-card2 ${PopupState === featDislike ? 'toggle' : ''}`} 
+                            onClick={() => togglePopUp(featDislike)}
+                        >
+                            <img src={movies[movieIndex + 8].imgUrl} alt={movies[movieIndex + 8].title} />
                         </button>
-                        <button className={`movie-card2 ${swipeDirection === 'FeatDislike2' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike2')}>
-                            <img src={movies[9].imgUrl} alt={movies[9].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike3' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike3')}>
-                            <img src={movies[10].imgUrl} alt={movies[10].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike4' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike4')}>
-                            <img src={movies[11].imgUrl} alt={movies[11].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike5' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike5')}>
-                            <img src={movies[12].imgUrl} alt={movies[12].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike6' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike6')}>
-                            <img src={movies[13].imgUrl} alt={movies[13].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike7' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike7')}>
-                            <img src={movies[14].imgUrl} alt={movies[14].title} />
-                        </button>                <button className={`movie-card2 ${swipeDirection === 'FeatDislike8' ? 'slide-out-up' : ''}`} onClick={() => handleSwipe('FeatDislike8')}>
-                            <img src={movies[15].imgUrl} alt={movies[15].title} />
-                        </button>
-
-                </div>     
-
+                    {/*Popup UI*/}
+                    {popup && featDislike === PopupState && (
+                        <div className='popup'>
+                            <button className = "closeButton" onClick={() => togglePopUp(featDislike)}>X</button>
+                            <div className='contentBox'>
+                                <div className='popupImage'>
+                                    <img src={movies[movieIndex + 8].imgUrl} alt={movies[movieIndex + 8].title} />
+                                </div>
+                                <div className='textDescription'>
+                                    <h1>
+                                        {movies[movieIndex + 8].title}
+                                    </h1>
+                                    <h2>
+                                        Release Date: {movies[movieIndex + 8].release_date}
+                                    </h2>
+                                    <h2>
+                                        Total Votes: {movies[movieIndex + 8].vote_count}
+                                    </h2>
+                                    <br></br>
+                                    <p>
+                                        {movies[movieIndex + 8].overview}
+                                    </p>
+                                    <div className='bottomInfo'>
+                                        <h1>Like: <button className='likeAndDislike' onClick={() => handleLike('like', movieIndex + 8)}>❤️</button></h1>
+                                        <h1>Dislike: <button className='likeAndDislike' onClick={() => handleLike('dislike', movieIndex + 8)}>❌</button></h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            ))}
+            </div>     
             </div>
             </>)}
-            <div id='bottomBar'>
 
+            <div id='bottomBar'>
             </div>
         </div>
+    </div>
     );
 }
 
