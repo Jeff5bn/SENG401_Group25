@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "Get All Movies",
+			"name": "Get All Movies TC11",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -72,7 +72,7 @@
 			]
 		},
 		{
-			"name": "Get Popular Movies",
+			"name": "Get Popular Movies  TC12",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -137,7 +137,7 @@
 			]
 		},
 		{
-			"name": "Get Popular Movies Ordered",
+			"name": "Get Popular Movies Ordered  TC13",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -202,7 +202,7 @@
 			]
 		},
 		{
-			"name": "Get Recent Movies",
+			"name": "Get Recent Movies  TC14",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -267,7 +267,7 @@
 			]
 		},
 		{
-			"name": "Get Upcoming Movies",
+			"name": "Get Upcoming Movies TC15",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -332,13 +332,13 @@
 			]
 		},
 		{
-			"name": "Post Create Users",
+			"name": "Post Create Users  TC16",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"user_name\": \"jeff123\",\r\n    \"password\": \"1234567\",\r\n    \"first_name\": \"jeff\",\r\n    \"last_name\": \"bezos\"\r\n}",
+					"raw": "{\r\n    \"user_name\": \"jefflostfantasy\",\r\n    \"password\": \"lostbypoint1\",\r\n    \"first_name\": \"jeff\",\r\n    \"last_name\": \"bezos\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -543,11 +543,75 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"user_id\": -1,\n    \"message\": \"Error Creating Account.\"\n}"
+				},
+				{
+					"name": "Post Create Users Good Request 2",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_name\": \"jefflostfantasy\",\r\n    \"password\": \"lostbypoint1\",\r\n    \"first_name\": \"jeff\",\r\n    \"last_name\": \"bezos\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://127.0.0.1:8000/api/create-user"
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 26 Mar 2024 18:01:54 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "WSGIServer/0.2 CPython/3.11.1"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Vary",
+							"value": "Accept, origin, Cookie"
+						},
+						{
+							"key": "Allow",
+							"value": "POST, OPTIONS"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "Referrer-Policy",
+							"value": "same-origin"
+						},
+						{
+							"key": "Cross-Origin-Opener-Policy",
+							"value": "same-origin"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"user_id\": 2,\n    \"message\": \"Account Created\"\n}"
 				}
 			]
 		},
 		{
-			"name": "Get Users",
+			"name": "Get Users TC17",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -612,7 +676,7 @@
 			]
 		},
 		{
-			"name": "Post Login",
+			"name": "Post Login  TC18",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -695,7 +759,7 @@
 			]
 		},
 		{
-			"name": "Get Get Users",
+			"name": "Get Get Users TC19",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -875,7 +939,7 @@
 			]
 		},
 		{
-			"name": "Post Reset User Pref",
+			"name": "Post Reset User Pref TC20",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -1055,7 +1119,7 @@
 			]
 		},
 		{
-			"name": "Post Liked Movies",
+			"name": "Post Liked Movies TC21",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -1247,7 +1311,7 @@
 			]
 		},
 		{
-			"name": "Post Disliked Movies",
+			"name": "Post Disliked Movies  TC22",
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -1439,7 +1503,7 @@
 			]
 		},
 		{
-			"name": "Get Recommended Movies",
+			"name": "Get Recommended Movies  TC23",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1619,7 +1683,7 @@
 			]
 		},
 		{
-			"name": "Get Get Genres",
+			"name": "Get Get Genres TC24",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -1684,7 +1748,7 @@
 			]
 		},
 		{
-			"name": "Post Convert Genres",
+			"name": "Post Convert Genres TC25",
 			"request": {
 				"method": "POST",
 				"header": [],
