@@ -6,7 +6,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    transition: transform 0.3s ease-in-out;
+    transition: transform 0.5s ease-in-out;
     opacity: 1;
     border-image-slice: 1;
     border-radius: 5px;
@@ -19,13 +19,11 @@
     border-radius: 5px;
     justify-content: center;
   }
-  
-  .movie-card2.slide-out-up {
-    transform: translateY(-100vh);
-    opacity: 0.5;
-  }
 
-  .movie-card2.slide-out-down {
-    transform: translateY(100vh);
-    opacity: 0.5;
+  .movie-card2:hover {
+    transform: scale(1.5);
   }
+  
+  /*.movie-card2.toggle {
+    transform: scale(1.5);
+  }*/

@@ -13,9 +13,9 @@ function Instructions() {
       <button onClick={togglePopout} className="help-button">?</button>
       <div className={`popout ${showPopout ? 'show' : ''}`}>
         <div className='popout-content'>
-        <p>To like a movie, swipe right or click the ❤️ button</p>
-        <p>To dislike a movie, swipe left or click the ❌ button</p>
-        <p>To skip a movie, swipe up or click the ⛔ button</p>
+        <p>To like a movie, swipe right or click the <b>&#9829;</b> button</p>
+        <p>To dislike a movie, swipe left or click the <b>X</b> button</p>
+        <p>To skip a movie, swipe up or click the <b>&#8634;</b> button</p>
         <p>To see recommended movies based on your interests, click the See Recommendations button</p>
         </div>
       </div>
