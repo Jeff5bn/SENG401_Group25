@@ -95,7 +95,7 @@ class CreateUserView(APIView):
                 return Response({"user_id": -1, "message": "Username already exists."}, status=status.HTTP_400_BAD_REQUEST)
             except ObjectDoesNotExist:
                 salt, hashed_password = User().hash_password(password)
-                user = User(user_name=user_name, password=hashed_password, salt=salt, first_name=first_name, last_name=last_name)
+                user = User(user_name=user_name, password=hashed_password.decode('utf-8'), salt=salt.decode('utf-8'), first_name=first_name, last_name=last_name)
                 user.save()
                 created_user = User.objects.get(user_name=user_name)
                 print(created_user.id)
