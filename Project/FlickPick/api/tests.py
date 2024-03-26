@@ -32,48 +32,56 @@ class FlickPickAPITest(TestCase):
     def tearDown(self) -> None:
         return super().tearDown()
     
+    #Test Case 1
     def test_movies_get_title(self):
         movie = self.mov1
         self.assertEqual(movie.get_movie_title(), "The Beekeeper")
 
+    #Test Case 2
     def test_movies_get_genre_id(self):
         movie = self.mov1
         self.assertEqual(movie.get_genres(), [28,53,18])
 
+    #Test Case 3
     def test_user_get_liked_movies(self):
         user = self.user1
         self.assertEqual(user.get_liked_movies(), [263115,284052])
 
+    #Test Case 4
     def test_user_get_disliked_movies(self):
         user = self.user1
         self.assertEqual(user.get_disliked_movies(), [254,8966])
-    
-    #Need to find better way of testing
+
+    #Test Case 5 
     def test_user_get_salt(self):
         user = self.user1
         self.assertEqual(user.get_salt(), user.salt)
 
-    #Check with Raymond
+    #Test Case 6
     def test_user_check_password(self):
         user = self.user1
         self.assertTrue(user.check_password_test(user.get_salt(), self.unhashed_pass))
-    
+
+    #Test Case 7  
     def test_user_add_liked_movies(self):
         user = self.user1
         user.add_liked_movie(14160)
         self.assertEqual(user.get_liked_movies(), [263115,284052,14160])
     
+    #Test Case 8
     def test_user_add_disliked_movies(self):
         user = self.user1
         user.add_disliked_movie(68721)
         self.assertEqual(user.get_disliked_movies(), [254,8966,68721])
 
+    #Test Case 9
     def test_user_reset_like_dislike(self):
         user = self.user1
         user.reset_like_dislike()
         self.assertEqual(user.get_liked_movies(), [])
         self.assertEqual(user.get_disliked_movies(), [])
-    
+
+    #Test Case 10
     def test_user_get_username(self):
         user = self.user1
         self.assertEqual(user.__str__(), "jeffbertel")
