@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './UserScreen.css';
 
-function LoginScreen({ setShowLogin, setLoggedIn , changeUserId}) {
+function LoginScreen({ setShowLogin, setLoggedIn ,loggedIn, changeUserId}) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userId, setUserId] = useState('');
@@ -54,7 +54,7 @@ function LoginScreen({ setShowLogin, setLoggedIn , changeUserId}) {
         setUserId(data['user_id']);
         changeUserId(data['user_id']); // Call the changeUserId function with the new userId value
         setShowLogin(false); // Close the login popup
-
+        setLoggedIn(true)
       } else {
         setStatusText("Sign Up Failed");
       }
@@ -86,7 +86,7 @@ function LoginScreen({ setShowLogin, setLoggedIn , changeUserId}) {
       } else if (data['user_id'] !== '') {
         setUserId(data['user_id']);
         changeUserId(data['user_id']); // Call the changeUserId function with the new userId value
-
+        setLoggedIn(true)
         setShowLogin(false); // Close the login popup
       } else {
         setStatusText("Login Failed");
@@ -101,8 +101,18 @@ function LoginScreen({ setShowLogin, setLoggedIn , changeUserId}) {
     if (userId !== '') {
       setShowLogin(false); // Close the login popup when userId is not empty
     }
+    if (!loggedIn){
+      setShowLogin(true)
+    }
   }, [userId, setShowLogin]);
-  
+  useEffect(() => {
+    if (!loggedIn){
+      setUserId('');
+      setShowLogin(true)
+    }
+  },[setLoggedIn])  
+
+
 
   return (
     <div className="container">
@@ -132,15 +142,32 @@ function LoginScreen({ setShowLogin, setLoggedIn , changeUserId}) {
   );
 }
 
-function SettingsScreen({ setShowSettings, setLoggedIn }) {
+function SettingsScreen({ setShowSettings, setLoggedIn ,setShowLogin,userId}) {
   const handleLogout = () => {
     setLoggedIn(false);
     setShowSettings(false);
+    setShowLogin(true);
   };
 
-  const handleReset = () => {
-    // Reset call here
-  }
+  const handleReset = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/reset-user-preferences?user_id=${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // Specify the content type
+        }
+            });
+      if (!response.ok) {
+        console.log(response);
+      }
+      else{
+        setShowSettings(false)
+      }
+    } catch (error) {
+      console.error('Error signing up:', error);
+    }
+  };
+  
 
   return (
     <div className="container">
@@ -154,20 +181,27 @@ function SettingsScreen({ setShowSettings, setLoggedIn }) {
   );
 }
 
-function UserScreen({changeUserId}) {
+function UserScreen({changeUserId,userId}) {
   const [showLogin, setShowLogin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
-
+  useEffect(()=>{
+    if(userId===''){
+    setShowLogin(true)
+  }
+  else{
+    setLoggedIn(true)
+  }
+  },[])
   return (
     <div>
       {loggedIn ? (
         <button className={`button-toggle ${showSettings ? 'active' : ''}`} onClick={() => setShowSettings(!showSettings)}>Settings</button>
       ) : (
-        <button className={`button-toggle ${showLogin ? 'active' : ''}`} onClick={() => setShowLogin(!showLogin)}>Login</button>
+        <button className={`button-toggle ${showLogin ? 'active' : ''}`}>Login</button>
       )}
-      {showSettings && <SettingsScreen setShowSettings={setShowSettings} setLoggedIn={setLoggedIn} />}
-      {showLogin && <LoginScreen setShowLogin={setShowLogin} setLoggedIn={setLoggedIn} changeUserId={changeUserId}/>}
+      {showSettings && <SettingsScreen setShowSettings={setShowSettings} setLoggedIn={setLoggedIn} setShowLogin={setShowLogin} userId={userId}/>}
+      {showLogin && <LoginScreen setShowLogin={setShowLogin} setLoggedIn={setLoggedIn} changeUserId={changeUserId} loggedIn={loggedIn}/>}
     </div>
   );
 }

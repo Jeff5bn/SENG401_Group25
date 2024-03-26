@@ -75,5 +75,5 @@ HOW TO START APPICATION
 1. terminal in Project/FlickPick
 1.1 run: python manage.py runserver
 
-2. terminal in Project/FlickPick/app
+2. terminal in Project/FlickPick/app/frontend
 2.1 run: npm start

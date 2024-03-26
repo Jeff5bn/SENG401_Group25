@@ -1,0 +1,72 @@
+.popup {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    background-color: rgb(0, 0, 0, 0.75);
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: white;
+  }
+.contentBox {
+    background-color: rgb(56, 59, 59);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 85%;
+    height: 85%;
+    display: flex;
+}
+
+.textDescription {
+    position: relative;
+    width: 65%;
+    left: 2.5%;
+    top: 2%
+}
+
+.bottomInfo {
+    position: absolute;
+    bottom: 5%;
+    width: 65%;
+    left: 17.5%;
+}
+.likeAndDislike:hover {
+    transform: scale(1.25);
+}
+
+.popupImage {
+    width: 55vh;
+    position: relative;
+    top: 1.15%;
+    left: 1%;
+    margin: 2px;
+    border-radius: 8px;
+}
+
+.closeButton {
+    position: absolute;
+    right: 30px;
+    top: 10px;
+    margin: 5px;
+    
+    color: rgb(48, 57, 57);
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    outline: none;
+    background-image: 
+    url(https://static.vecteezy.com/system/resources/previews/018/764/682/non_2x/white-coloured-pencil-scribble-paint-free-png.png);
+    background-position: center;
+    background-size: 75px 50px;
+    background-repeat: no-repeat;
+    opacity: 0.8;
+    width: 50px;
+    height: 50px;
+}
+.closeButton:hover {
+    opacity: 1;
+}
