@@ -78,3 +78,13 @@ HOW TO START APPLICATION
 
 2. terminal in Project/FlickPick/app/frontend
 2.1 run: npm start
+
+
+
+Note if you are running the backend on python 3.9 then in order for the login to work you must change these two lines. (3.10 and 3.11 should work)
+
+in Project/FlickPick/api/views.py line 98: remove .decode('utf-8') in two places
+<img src="Diagrams and Tests/veiws.py.JPG"/>
+
+in Project/FlickPick/api/models.py line 61: remove .decode('utf-8') in one place
+<img src="Diagrams and Tests/models.py.JPG"/>
