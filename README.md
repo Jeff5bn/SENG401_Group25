@@ -63,6 +63,7 @@ BACKEND SETUP
 10. go to pgadmin4 click query tool button near top left
 11. paste sql code
 12. run query (should get INSERT 0 398)
+12.5 do the same with datainit2.txt
 13. in vscode terminal: python manage.py runserver
 14. go to this url to see if the api is workinig http://127.0.0.1:8000/api/movies
 
