@@ -69,6 +69,7 @@ function LoginScreen({ setShowLogin, setLoggedIn ,loggedIn, changeUserId}) {
       password: password,
       // Add any other fields as needed
     };
+  
     try {
       const response = await fetch(`http://localhost:8000/api/login?`, {
         method: "POST",
@@ -77,19 +78,24 @@ function LoginScreen({ setShowLogin, setLoggedIn ,loggedIn, changeUserId}) {
         },
         body: JSON.stringify(userData), // Convert the data object to JSON string
       });
+  
       if (!response.ok) {
         console.log(response);
-      }
-      const data = await response.json();
-      if (data['user_id'] === -1) {
+        console.log('bad login');
         setStatusText("Login Failed - Incorrect username or password");
-      } else if (data['user_id'] !== '') {
-        setUserId(data['user_id']);
-        changeUserId(data['user_id']); // Call the changeUserId function with the new userId value
-        setLoggedIn(true)
-        setShowLogin(false); // Close the login popup
       } else {
-        setStatusText("Login Failed");
+        const data = await response.json();
+        if (data['user_id'] === -1) {
+          setStatusText("Login Failed - Incorrect username or password");
+        } else if (data['user_id'] !== '') {
+          setUserId(data['user_id']);
+          changeUserId(data['user_id']); // Call the changeUserId function with the new userId value
+          setLoggedIn(true)
+          setShowLogin(false); // Close the login popup
+          console.log('aa')
+        } else {
+          setStatusText("Login Failed");
+        }
       }
     } catch (error) {
       console.error('Error logging in:', error);
