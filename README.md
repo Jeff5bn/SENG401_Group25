@@ -6,14 +6,14 @@ BACKEND SETUP
 
     1.2 install takes like 10 minutes
    
-    1.3 no stack bulder stuff just close it
+    1.3 no stack builder stuff just close it
    
-    1.4 check progarms to see if you have pgadmin 4
+    1.4 check programs to see if you have pgadmin 4
    
 
 3.  Open pgAdmin 4 (should just be a normal progarm, search using bottom left ssearch on windows type thing)
    
-    2.05 clikc on drop down for servers on the left
+    2.05 click on drop down for servers on the left
     
     2.1 sign in using superuser password
     
@@ -52,7 +52,7 @@ BACKEND SETUP
 
     3.62 pip install py-bcrypt
    
-    3.4 in Project/FlickPick: python manage.py makemigrations (if issues make sure port on .env matches port on pgadmin right click postgres 16 -> portperties)
+    3.4 in Project/FlickPick: python manage.py makemigrations (if issues make sure port on .env matches port on pgadmin right click postgres 16 -> properties)
    
     3.5 python manage.py migrate
    
@@ -71,7 +71,7 @@ FRONTEND SETUP
 3. npm install -D tailwindcss
 4. npx tailwindcss init
 
-HOW TO START APPICATION
+HOW TO START APPLICATION
 1. terminal in Project/FlickPick
 1.1 run: python manage.py runserver
 
